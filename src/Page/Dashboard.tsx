@@ -80,7 +80,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="w-full flex gap-6 items-center h-[279px]">
-        <div className="flex flex-col bg-primary w-[65vw] h-[260px] p-4 rounded-3xl gap-2">
+        <div className="flex flex-col bg-primary w-2/3 h-[260px] p-4 rounded-3xl gap-2">
           <div className="w-full flex justify-between items-center">
             <p className="text-off-white text-[24px] font-medium">
               Total Balance
@@ -148,11 +148,13 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="w-[25vw] bg-off-white h-[260px] p-4 rounded-3xl shadow-md shadow-gray-400">
-          <p className="text-primary text-[24px] font-medium">Category</p>
+        <div className="w-1/3 bg-off-white h-[260px] p-4 rounded-3xl shadow-md shadow-gray-400">
+          <p className="text-primary text-[24px] font-medium">
+            Top Category Spent
+          </p>
           <div className="flex items-center gap-2 h-full">
             <div className="flex-1 w-full h-[250px]">
-              <ResponsiveContainer width="100%" height={210}>
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart
                   responsive
                   margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
