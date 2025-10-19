@@ -9,9 +9,10 @@ export default {
         "off-white": "#FFF9F2",
         "medium-green": "#2E771A",
         "medium-red": "#D60E0E",
+        lightblue: "#F0F7FF",
       },
       fontFamily: {
-        montserrat: "Montserrat",
+        montserrat: ["Montserrat", "sans-serif"],
       },
     },
   },

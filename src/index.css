@@ -1,7 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/index.css (or equivalent) */
 
+/* load fonts first */
 @font-face {
   font-family: "Montserrat";
   font-style: normal;
@@ -9,7 +8,6 @@
   font-display: swap;
   src: url("/fonts/Montserrat-Light.ttf") format("truetype");
 }
-
 @font-face {
   font-family: "Montserrat";
   font-style: normal;
@@ -17,7 +15,6 @@
   font-display: swap;
   src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
 }
-
 @font-face {
   font-family: "Montserrat";
   font-style: normal;
@@ -26,6 +23,20 @@
   src: url("/fonts/Montserrat-SemiBold.ttf") format("truetype");
 }
 
+/* Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: set as default for the whole site */
 :root {
   --font-montserrat: "Montserrat", sans-serif;
+}
+
+/* make it default */
+@layer base {
+  html,
+  body {
+    font-family: var(--font-montserrat);
+  }
 }
