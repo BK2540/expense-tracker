@@ -137,7 +137,7 @@ const PortfolioDebug: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden p-6">
+    <div className="flex flex-col overflow-hidden p-6 w-full xl:px-[100px] ">
       <div className="flex w-full justify-start mt-6">
         <div className="flex items-end">
           {portfolioData.map((item) => (

@@ -19,7 +19,7 @@ const Sidebar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="fixed min-h-screen w-[248px] bg-primary top-0 left-0 flex flex-col py-[32px] px-6 items-center">
+    <div className="fixed min-h-screen w-[100px] xl:w-[248px] bg-primary top-0 left-0 flex flex-col py-[32px] px-6 items-center">
       <div className="w-[72px] h-[72px] rounded-full bg-gray-300" />
 
       <div className="mt-[72px] w-full flex flex-col gap-4">
@@ -36,7 +36,10 @@ const Sidebar = () => {
               onClick={() => navigate(item.path)}
             >
               <Icon style={{ fill: "#FFF9F2" }} />
-              <p className="text-base font-normal text-off-white">
+
+              <p
+                className={`text-base font-normal text-off-white hidden xl:flex`}
+              >
                 {item.label}
               </p>
             </div>
