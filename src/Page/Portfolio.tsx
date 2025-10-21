@@ -1,7 +1,7 @@
 // src/pages/PortfolioDebug.tsx
 import React, { useMemo, useState, useEffect } from "react";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import CredirCard from "../components/card/CredirCard";
+import CredirCard from "../components/card/CreditCard";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { portfolioData as rawPortfolioData } from "../constant/data";
 import SwapVertRoundedIcon from "@mui/icons-material/SwapVertRounded";
@@ -176,7 +176,7 @@ const PortfolioDebug: React.FC = () => {
           </button>
         </div> */}
 
-        <div className="w-full flex items-center gap-6">
+        <div className="w-full flex flex-col md:flex-row items-center gap-6">
           <div className="flex items-center gap-4">
             <div className="flex gap-4">
               {selected?.cardInfo?.map((c) => (
@@ -190,28 +190,28 @@ const PortfolioDebug: React.FC = () => {
             </div>
           </div>
 
-          <div className="w-full h-[148px] flex justify-between items-center gap-4">
+          <div className="w-full h-[148px] flex  justify-between items-center gap-4">
             <div className="flex flex-col bg-off-white p-4 rounded-3xl min-h-[100px] h-full w-full gap-4 shadow-md justify-center">
               <p className="text-[12px] md:text-[14px] font-semibold text-primary">
                 Total Balance
               </p>
-              <p className="text-[24px] text-primary font-medium text-center">
+              <p className="text-[16px] md:text-[24px] text-primary font-medium text-center">
                 {selected ? fmt(selected.balance) : "-"}
               </p>
             </div>
             <div className="flex flex-col bg-off-white p-4 rounded-3xl min-h-[100px] h-full w-full gap-4 shadow-md justify-center">
-              <p className="text-[12px] md:text-[14px] font-semibold text-primary">
+              <p className="text-[12px] md:text-[14px] font-semibold text-medium-green">
                 Total Income
               </p>
-              <p className="text-[24px] text-medium-green font-medium text-center">
+              <p className="text-[16px] md:text-[24px] text-medium-green font-medium text-center">
                 {selected ? fmt(selected.income) : "-"}
               </p>
             </div>
             <div className="flex flex-col bg-off-white p-4 rounded-3xl min-h-[100px] h-full w-full gap-4 shadow-md justify-center">
-              <p className="text-[12px] md:text-[14px] font-semibold text-primary">
+              <p className="text-[12px] md:text-[14px] font-semibold text-medium-red">
                 Total Expense
               </p>
-              <p className="text-[24px] text-medium-red font-medium text-center">
+              <p className="text-[16px] md:text-[24px] text-medium-red font-medium text-center">
                 {selected ? fmt(selected.expense) : "-"}
               </p>
             </div>
@@ -223,7 +223,7 @@ const PortfolioDebug: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setView("all")}
-              className={`px-3 py-1 rounded-full ${
+              className={`px-3 py-1 rounded-full text-[14px] md:text-base ${
                 view === "all"
                   ? "bg-primary text-off-white"
                   : "bg-transparent border"
@@ -233,7 +233,7 @@ const PortfolioDebug: React.FC = () => {
             </button>
             <button
               onClick={() => setView("income")}
-              className={`px-3 py-1 rounded-full ${
+              className={`px-3 py-1 rounded-full text-[14px] md:text-base ${
                 view === "income"
                   ? "bg-primary text-off-white"
                   : "bg-transparent border"
@@ -243,7 +243,7 @@ const PortfolioDebug: React.FC = () => {
             </button>
             <button
               onClick={() => setView("expense")}
-              className={`px-3 py-1 rounded-full ${
+              className={`px-3 py-1 rounded-full text-[14px] md:text-base ${
                 view === "expense"
                   ? "bg-primary text-off-white"
                   : "bg-transparent border"
@@ -321,7 +321,7 @@ const PortfolioDebug: React.FC = () => {
                     <td className="px-4 py-2 text-[12px] md:text-[14px]">
                       {t.description}
                     </td>
-                    <td className="px-4 py-2 text-[12px] md:text-[14px]">
+                    <td className="px-4 py-2 text-[12px] md:text-[14px] truncate text-ellipsis">
                       {t.account}
                     </td>
                     <td className="px-4 py-2 text-right text-[12px] md:text-[14px]">

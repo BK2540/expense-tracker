@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Sidebar from "../components/navigations/Sidebar";
-import CredirCard from "../components/card/CredirCard";
+import CredirCard from "../components/card/CreditCard";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import CircleRoundedIcon from "@mui/icons-material/CircleRounded";
@@ -11,11 +10,8 @@ import {
   BarChart,
   CartesianGrid,
   Legend,
-  Line,
-  LineChart,
   Pie,
   PieChart,
-  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -47,10 +43,8 @@ type Portfolio = {
 };
 
 const Dashboard = () => {
-  const [balanceView, setBalanceView] = useState<"year" | "month">("year");
-  const [incomeView, setIncomeView] = useState<"year" | "month">("year");
-  const [expenseView, setExpenseView] = useState<"year" | "month">("year");
   const [chartHeight, setChartHeight] = useState<number>(200);
+  const [currentPortfolioIndex, setCurrentPortfolioIndex] = useState<number>(0);
 
   useEffect(() => {
     const calculateChartHeight = () => {
@@ -70,6 +64,19 @@ const Dashboard = () => {
   }, []);
 
   const data = portfolioData as Portfolio[];
+
+  // Navigation handlers
+  const handlePrevPortfolio = () => {
+    setCurrentPortfolioIndex((prev) =>
+      prev === 0 ? data.length - 1 : prev - 1
+    );
+  };
+
+  const handleNextPortfolio = () => {
+    setCurrentPortfolioIndex((prev) =>
+      prev === data.length - 1 ? 0 : prev + 1
+    );
+  };
 
   // Calculate totals
   const totals = useMemo(() => {
@@ -123,30 +130,60 @@ const Dashboard = () => {
   const fmt = (v: number) =>
     `$${v.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
 
-  const cardData = data[0]?.cardInfo || [];
+  const currentPortfolio = data[currentPortfolioIndex];
+  const cardData = currentPortfolio?.cardInfo || [];
 
   return (
     <div className="flex flex-col gap-6 overflow-hidden p-4 md:p-6 lg:px-[100px] w-full">
       {/* Cards Section */}
       <div className="w-full flex flex-col lg:flex-row items-center gap-4 md:gap-6">
-        <div className="w-full lg:w-auto flex items-center justify-center gap-2 md:gap-4">
-          <div className="w-6 h-6 rounded-full shadow-md shadow-gray-300 flex justify-center items-center flex-shrink-0">
-            <KeyboardArrowLeftRoundedIcon style={{ fill: "#161D26" }} />
+        <div className="w-full lg:w-auto flex flex-col gap-2">
+          {/* Cards with Navigation */}
+          <div className="flex items-center justify-center gap-2 md:gap-4">
+            <button
+              onClick={handlePrevPortfolio}
+              className="w-6 h-6 rounded-full shadow-md shadow-gray-300 flex justify-center items-center flex-shrink-0 hover:bg-gray-100 transition-colors cursor-pointer"
+              aria-label="Previous portfolio"
+            >
+              <KeyboardArrowLeftRoundedIcon style={{ fill: "#161D26" }} />
+            </button>
+
+            <div className="flex overflow-x-auto gap-2 md:gap-4 min-w-[250px]">
+              {cardData.map((item) => (
+                <div key={item.number} className="flex-shrink-0 h-[155px]">
+                  <CredirCard
+                    number={item.number}
+                    amount={item.amount}
+                    type={item.type}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleNextPortfolio}
+              className="w-6 h-6 rounded-full shadow-md shadow-gray-300 flex justify-center items-center flex-shrink-0 hover:bg-gray-100 transition-colors cursor-pointer"
+              aria-label="Next portfolio"
+            >
+              <KeyboardArrowRightRoundedIcon style={{ fill: "#161D26" }} />
+            </button>
           </div>
-          <div className="flex overflow-x-auto gap-2 md:gap-4">
-            {cardData.map((item) => (
-              <div key={item.number} className="flex-shrink-0">
-                <CredirCard
-                  number={item.number}
-                  amount={item.amount}
-                  type={item.type}
-                />
-              </div>
+
+          {/* Portfolio Indicator Dots */}
+          {/* <div className="flex justify-center gap-1.5 mt-2">
+            {data.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPortfolioIndex(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  index === currentPortfolioIndex
+                    ? "bg-primary w-6"
+                    : "bg-gray-300"
+                }`}
+                aria-label={`Go to portfolio ${index + 1}`}
+              />
             ))}
-          </div>
-          <div className="w-6 h-6 rounded-full shadow-md shadow-gray-300 flex justify-center items-center flex-shrink-0">
-            <KeyboardArrowRightRoundedIcon style={{ fill: "#161D26" }} />
-          </div>
+          </div> */}
         </div>
 
         <div className="bg-secorndary rounded-3xl w-full lg:flex-1 p-4 md:p-6 h-auto md:h-[148px] flex flex-col md:flex-row justify-between items-stretch md:items-center gap-3 md:gap-4">
@@ -184,32 +221,6 @@ const Dashboard = () => {
             <p className="text-off-white text-[20px] xl:text-[24px] font-medium">
               Portfolio Comparison
             </p>
-
-            {/* <div className="flex items-center gap-2">
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  balanceView === "year"
-                    ? "bg-off-white text-primary"
-                    : "bg-transparent text-off-white border border-off-white"
-                }`}
-                onClick={() => setBalanceView("year")}
-              >
-                Year
-              </button>
-
-              <div className="h-4 w-[1px] bg-off-white" />
-
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  balanceView === "month"
-                    ? "bg-off-white text-primary"
-                    : "bg-transparent text-off-white border border-off-white"
-                }`}
-                onClick={() => setBalanceView("month")}
-              >
-                Month
-              </button>
-            </div> */}
           </div>
 
           <div
@@ -300,32 +311,6 @@ const Dashboard = () => {
             <p className="text-primary text-[20px] xl:text-[24px] font-medium">
               Income by Portfolio
             </p>
-
-            {/* <div className="flex items-center gap-2">
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  incomeView === "year"
-                    ? "text-off-white bg-primary"
-                    : "bg-transparent text-primary border border-primary"
-                }`}
-                onClick={() => setIncomeView("year")}
-              >
-                Year
-              </button>
-
-              <div className="h-4 w-[1px] bg-primary" />
-
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  incomeView === "month"
-                    ? "text-off-white bg-primary"
-                    : "bg-transparent text-primary border border-primary"
-                }`}
-                onClick={() => setIncomeView("month")}
-              >
-                Month
-              </button>
-            </div> */}
           </div>
           <div
             className="flex-1 w-full"
@@ -340,7 +325,6 @@ const Dashboard = () => {
                 <XAxis dataKey="name" tick={{ fontSize: 12, dx: -5 }} />
                 <YAxis width={40} tick={{ fontSize: 12 }} />
                 <Tooltip />
-                {/* <Legend /> */}
                 <Area
                   type="monotone"
                   dataKey="income"
@@ -358,32 +342,6 @@ const Dashboard = () => {
             <p className="text-primary text-[20px] xl:text-[24px] font-medium">
               Expense by Portfolio
             </p>
-
-            {/* <div className="flex items-center gap-2">
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  expenseView === "year"
-                    ? "text-off-white bg-primary"
-                    : "bg-transparent text-primary border border-primary"
-                }`}
-                onClick={() => setExpenseView("year")}
-              >
-                Year
-              </button>
-
-              <div className="h-4 w-[1px] bg-primary" />
-
-              <button
-                className={`px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-[12px] lg:text-[14px] rounded-full font-montserrat font-medium transition-all ${
-                  expenseView === "month"
-                    ? "text-off-white bg-primary"
-                    : "bg-transparent text-primary border border-primary"
-                }`}
-                onClick={() => setExpenseView("month")}
-              >
-                Month
-              </button>
-            </div> */}
           </div>
           <div
             className="flex-1 w-full"
@@ -398,7 +356,6 @@ const Dashboard = () => {
                 <XAxis dataKey="name" tick={{ fontSize: 12, dx: -5 }} />
                 <YAxis width={40} tick={{ fontSize: 12 }} />
                 <Tooltip />
-                {/* <Legend /> */}
                 <Area
                   type="monotone"
                   dataKey="expense"
